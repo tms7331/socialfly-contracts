@@ -10,10 +10,21 @@ contract SocialflyApprovals {
     }
 
     function getApproval(
-        address user,
+        address caller,
+        address hardcodedAddress,
         string memory ipfsCid
     ) public view returns (bool) {
         bytes32 ipfsHash = keccak256(abi.encodePacked(ipfsCid));
-        return nestedMap[user][ipfsHash];
+        return
+            nestedMap[caller][ipfsHash] &&
+            nestedMap[hardcodedAddress][ipfsHash];
+    }
+
+    function getApprovalOk(
+        address caller,
+        address hardcodedAddress,
+        string memory ipfsCid
+    ) public view returns (bool) {
+        return true;
     }
 }
